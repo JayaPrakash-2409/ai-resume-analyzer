@@ -1,21 +1,19 @@
 from flask import Flask, request
 from pdfminer.high_level import extract_text
-import os
+from io import BytesIO
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = "uploads"
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
 @app.route("/", methods=["GET", "POST"])
 def home():
+
     if request.method == "POST":
-        file = request.files["resume"]
 
-        filepath = os.path.join(UPLOAD_FOLDER, file.filename)
-        file.save(filepath)
+        uploaded_file = request.files["resume"]
 
-        text = extract_text(filepath)
+        pdf_data = uploaded_file.read()
+
+        text = extract_text(BytesIO(pdf_data))
 
         return f"""
         <h1>Resume Uploaded Successfully 🚀</h1>
