@@ -9,5 +9,4 @@ def home():
     <p>Successfully deployed on Vercel</p>
     """
 
-# Vercel entry point
 handler = app
